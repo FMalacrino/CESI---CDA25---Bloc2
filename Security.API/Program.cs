@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Security.API.Data;
-using Security.API.Data.Models;
+using Security.API.Services;
+using Security.Data;
+using Security.Data.Models;
+using Security.Data.Repositories;
+using Security.Data.Repositories.Sql;
 
 namespace Security.API
 {
@@ -18,6 +21,7 @@ namespace Security.API
             builder.Services.AddControllers();
 
             #region SWAGGER
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
@@ -48,10 +52,14 @@ namespace Security.API
                     }
                 });
             });
-            #endregion
+
+            #endregion SWAGGER
 
             builder.Services.AddDbContext<DataContext>(options =>
-                options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
+                options.UseSqlite(builder.Configuration.GetConnectionString("Default"),
+                    b => b.MigrationsAssembly("Security.API"))); // car DataContext est dans une autre assembly
+
+            builder.Services.AddScoped<IResourceRepository, SqlResourceRepository>();
 
             builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<DataContext>()
@@ -85,7 +93,7 @@ namespace Security.API
 
             using (var scope = app.Services.CreateScope())
             {
-                DataContext.Initialize(scope.ServiceProvider);
+                DataService.Initialize(scope.ServiceProvider);
             }
 
             if (app.Environment.IsDevelopment())

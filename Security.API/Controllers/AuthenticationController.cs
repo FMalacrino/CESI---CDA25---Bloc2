@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Security.API.Data.Models;
+using Security.Data.Models;
 
 namespace Security.API.Controllers
 {
@@ -37,6 +37,7 @@ namespace Security.API.Controllers
             var authClaims = new List<Claim>()
             {
                 new (ClaimTypes.Email, user.Email),
+                new (ClaimTypes.SerialNumber, user.Id),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 

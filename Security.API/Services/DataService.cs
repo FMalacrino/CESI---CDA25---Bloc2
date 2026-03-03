@@ -1,12 +1,11 @@
-﻿using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Security.API.Data.Models;
+using Security.Data;
+using Security.Data.Models;
 
-namespace Security.API.Data
+namespace Security.API.Services
 {
-    public class DataContext : IdentityDbContext<User>
+    public static class DataService
     {
         // provider: récupérer un service
         public static async Task Initialize(IServiceProvider provider)
@@ -35,7 +34,7 @@ namespace Security.API.Data
             var adminName = configuration.GetValue<string>("Admin:Username");
             var adminPass = configuration.GetValue<string>("Admin:Password");
             //TODO Vérifier que les configs existent, sinon exception
-            if(!context.Users.Any(u=> u.UserName == adminName))
+            if (!context.Users.Any(u => u.UserName == adminName))
             {
                 var admin = new User
                 {
@@ -66,14 +65,5 @@ namespace Security.API.Data
             await context.SaveChangesAsync();
         }
 
-        public DataContext(DbContextOptions<DataContext> options)
-            : base(options)
-        {
-        }
-
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-        }
     }
 }
