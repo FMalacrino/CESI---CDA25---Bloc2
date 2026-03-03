@@ -23,12 +23,11 @@ namespace Security.Client
                 var model = repo.GetOne(1).Result;
                 Console.WriteLine(model.Name);
 
-                //for (int i = 0; i < 10; i++)
-                //{
                 model = new Data.Models.Resource() { Name = "Bar" };
                 model = await repo.Create(model);
                 Console.WriteLine(model.Id);
-                //}
+
+                Console.WriteLine(string.Join(',', (await repo.GetForUser()).Select(x => x.Id)));
             }
             catch (Exception ex)
             {
@@ -37,63 +36,10 @@ namespace Security.Client
                 Console.ResetColor();
             }
             Console.ReadKey();
-            return;
 
             try
             {
                 RegisterUser();
-            }
-            catch (Exception ex)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(ex.Message + " " + ex.GetType().ToString());
-                Console.ResetColor();
-            }
-            Console.ReadKey();
-            return;
-
-            HttpResponseMessage response;
-
-            // HttpRequestMessage -> HttpResponseMessage
-
-            try
-            {
-                //TODO Demander mail et pass à la console
-                // Register + login
-
-                // login
-                string loginUrl = url + "Authentication/login";
-                var body = new { Email = "admin@mail.com", Password = "secret" };
-                response = client.PostAsJsonAsync(loginUrl, body).Result; // Créer la reuqte avec body en json
-                // .Result: je veux exécuter la méthode de manière synchrone
-
-                //TODO traiter cas d'erreur
-                if (!response.IsSuccessStatusCode)
-                    throw new Exception("Authentification échec");
-
-                LoginResponseModel? jwt = response.Content.ReadFromJsonAsync<LoginResponseModel>().Result;
-                Console.WriteLine(jwt.token + " " + jwt.expiration.ToString("g"));
-
-                //string json = response.Content.ReadAsStringAsync().Result;
-                //var jwt = DeserializeAnonymous(json, new { token = "", expiration = DateTime.Now });
-                //Console.WriteLine(jwt.token);
-
-                // Appel quelconque Construction du la requete
-                HttpRequestMessage request = new()
-                {
-                    Method = HttpMethod.Get,
-                    RequestUri = new Uri(url + "test")
-                };
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwt.token);
-
-                // Envoi de la requete
-                response = client.Send(request);
-                if (!response.IsSuccessStatusCode)
-                    throw new Exception("Requete invalide " + (int)response.StatusCode);
-                // 401 si token incorrect ou expiré 403 si role incorrect
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("OK !!!");
-                Console.ResetColor();
             }
             catch (Exception ex)
             {

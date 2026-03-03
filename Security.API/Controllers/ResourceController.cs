@@ -19,6 +19,17 @@ namespace Security.API.Controllers
             this.userManager = userManager;
         }
 
+        [HttpGet] // api/resource
+        [Authorize(Roles = "User")]
+        public async Task<ActionResult<List<Resource>>> GetForUser()
+        {
+            // Récupération utilisateur authentifié
+            var id = userManager.GetUserId(User);
+            if (id == null)
+                return BadRequest();
+            return (await repository.GetForUser(id)).ToList();
+        }
+
         [HttpGet("{id}")] // api/resource/id
         [AllowAnonymous]
         public async Task<ActionResult<Resource>> GetOne(int id)

@@ -83,7 +83,7 @@ namespace Security.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
 
             // Ajout rôle
-            await userManager.AddToRoleAsync(user, "User"); //TODO assigner ce rôle par défaut dans le settings
+            await userManager.AddToRoleAsync(user, "User"); //TODO Définir le rôle par défaut dans les settings
             return Ok();
         }
 

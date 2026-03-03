@@ -64,7 +64,22 @@ namespace Security.API
             builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<DataContext>()
                 .AddDefaultTokenProviders();
-            //TODO Contraintes Mdp
+
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                // Contraintes mot de passe utilisateur
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Blocage utilisateur
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+            });
 
             builder.Services.AddAuthentication(options =>
             {

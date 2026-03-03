@@ -8,5 +8,7 @@ namespace Security.Data.Repositories
         Task<Resource> Create(Resource model);
 
         Task<Resource?> GetOne(int id);
+
+        Task<IEnumerable<Resource>> GetForUser(string? userId = null);
     }
 }

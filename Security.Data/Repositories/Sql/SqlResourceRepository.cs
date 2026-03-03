@@ -19,6 +19,11 @@ namespace Security.Data.Repositories.Sql
             return model;
         }
 
+        public async Task<IEnumerable<Resource>> GetForUser(string? userId = null)
+        {
+            return await context.Resources.Where(x => x.UserId == userId).ToListAsync();
+        }
+
         public async Task<Resource?> GetOne(int id)
         {
             return await context.Resources
