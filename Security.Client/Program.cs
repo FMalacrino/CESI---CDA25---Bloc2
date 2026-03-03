@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -6,20 +7,33 @@ namespace Security.Client
 {
     internal class Program
     {
+        private static readonly HttpClient client = new HttpClient();
+        private const string url = "https://localhost:7084/api/"; // url du server API
+
         static void Main(string[] args)
         {
-            const string url = "https://localhost:7084/api/"; // url du server API
-            HttpClient client = new HttpClient();
+            Thread.Sleep(500); // Pour laisser le temps au serveur de démarrer
+            try
+            {
+                RegisterUser();
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message + " " + ex.GetType().ToString());
+                Console.ResetColor();
+            }
+            Console.ReadKey();
+            return;
+
             HttpResponseMessage response;
 
             // HttpRequestMessage -> HttpResponseMessage
-            Thread.Sleep(500); // Attendre 2000ms pour laisser le temps au serveur de démarrer
 
             try
             {
                 //TODO Demander mail et pass à la console
                 // Register + login
-
 
                 // login
                 string loginUrl = url + "Authentication/login";
@@ -38,8 +52,7 @@ namespace Security.Client
                 //var jwt = DeserializeAnonymous(json, new { token = "", expiration = DateTime.Now });
                 //Console.WriteLine(jwt.token);
 
-                // Appel quelconque
-                // Construction du la requete
+                // Appel quelconque Construction du la requete
                 HttpRequestMessage request = new()
                 {
                     Method = HttpMethod.Get,
@@ -51,15 +64,10 @@ namespace Security.Client
                 response = client.Send(request);
                 if (!response.IsSuccessStatusCode)
                     throw new Exception("Requete invalide " + (int)response.StatusCode);
-                // 401 si token incorrect ou expiré
-                // 403 si role incorrect
+                // 401 si token incorrect ou expiré 403 si role incorrect
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("OK !!!");
                 Console.ResetColor();
-
-
-
-
             }
             catch (Exception ex)
             {
@@ -70,12 +78,37 @@ namespace Security.Client
             Console.ReadKey();
         }
 
+        public static void RegisterUser()
+        {
+            Console.WriteLine("Enter your email :");
+            string? mail = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(mail))
+                throw new Exception("Empty email");
+
+            Console.WriteLine("Enter your password :");
+            string? password = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(password))
+                throw new Exception("Empty password");
+
+            var response = client.PostAsJsonAsync(url + "Authentication/register", new { Email = mail, Password = password }).Result;
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Registration failed " + (int)response.StatusCode);
+            Console.WriteLine("Registration success");
+
+            response = client.PostAsJsonAsync(url + "Authentication/login", new { Email = mail, Password = password }).Result;
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Login failed " + (int)response.StatusCode);
+            string json = response.Content.ReadAsStringAsync().Result;
+            var jwt = DeserializeAnonymous(json, new { token = "", expiration = DateTime.Now });
+            Console.WriteLine("Login until " + jwt.expiration.ToString("g"));
+        }
+
         public static T? DeserializeAnonymous<T>(string json, T _)
             => JsonSerializer.Deserialize<T>(json);
 
         public class LoginResponseModel
         {
-            public string token { get; set; }
+            public string token { get; set; } = "";
             public DateTime expiration { get; set; }
         }
     }
