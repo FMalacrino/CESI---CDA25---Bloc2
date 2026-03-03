@@ -4,9 +4,9 @@ namespace Security.Data.Repositories.Http
 {
     public class HttpResourceRepository : HttpRepository, IResourceRepository
     {
-        public Task<Resource> Create(Resource model)
+        public async Task<Resource> Create(Resource model)
         {
-            throw new NotImplementedException();
+            return await Send(HttpMethod.Post, "resource", model);
         }
 
         public async Task<Resource?> GetOne(int id)

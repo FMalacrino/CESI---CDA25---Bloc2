@@ -1,8 +1,6 @@
-﻿using System;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Security.Data.Repositories.Http;
 
 namespace Security.Client
@@ -24,6 +22,13 @@ namespace Security.Client
             {
                 var model = repo.GetOne(1).Result;
                 Console.WriteLine(model.Name);
+
+                for (int i = 0; i < 10; i++)
+                {
+                    model = new Data.Models.Resource() { Name = "Bar" };
+                    model = await repo.Create(model);
+                    Console.WriteLine(model.Id);
+                }
             }
             catch (Exception ex)
             {

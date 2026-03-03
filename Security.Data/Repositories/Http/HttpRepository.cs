@@ -12,7 +12,7 @@ namespace Security.Data.Repositories.Http
         private readonly string apiUrl = "https://localhost:7084/api/"; //TODO Config
         private string token = "";
 
-        public async Task<T?> Send<T>(HttpMethod method, string path)
+        public async Task<T?> Send<T>(HttpMethod method, string path, T? model = null) where T : class // nécessaire à cause de l'argument par défaut
         {
             // Appel quelconque Construction du la requete
             HttpRequestMessage request = new()
@@ -22,14 +22,17 @@ namespace Security.Data.Repositories.Http
             };
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
+            // Ajout du content si nécessaire
+            if (model != null)
+                request.Content = JsonContent.Create(model);
+
             // Envoi de la requete
             var response = client.Send(request);
 
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
-                //TODO Login
                 await Login();
-               return  await Send<T>(method, path);
+                return await Send<T>(method, path, model);
             }
 
             // TODO décider comment gérer les exception
