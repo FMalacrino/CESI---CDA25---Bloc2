@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Security.Data.Models;
@@ -35,9 +34,11 @@ namespace Security.API.Controllers
         public async Task<ActionResult<Resource>> Create(Resource model)
         {
             // Récupération utilisateur authentifié
-            string? id = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.SerialNumber)?.Value;
-            model.UserId = id;
+            var id = userManager.GetUserId(User);
+            if (id == null)
+                return BadRequest();
 
+            model.UserId = id;
             var entity = await repository.Create(model);
             return Ok(entity);
         }

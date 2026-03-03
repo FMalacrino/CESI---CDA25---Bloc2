@@ -6,11 +6,12 @@ namespace Security.Data.Repositories.Http
 {
     public class HttpRepository
     {
-        public static string Mail = "", Password = "";
+        public static string Mail { get; set; } = "";
+        public static string Password { get; set; } = "";
+        private static readonly HttpClient client = new();
 
-        private readonly HttpClient client = new HttpClient();
-        private readonly string apiUrl = "https://localhost:7084/api/"; //TODO Config
         private string token = "";
+        private readonly string apiUrl = "https://localhost:7084/api/"; //TODO Config
 
         public async Task<T?> Send<T>(HttpMethod method, string path, T? model = null) where T : class // nécessaire à cause de l'argument par défaut
         {
@@ -31,7 +32,8 @@ namespace Security.Data.Repositories.Http
 
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
-                await Login();
+                //TODO Il faut limiter le nombre de tentative pour ne pas avoir de recursivité infinie
+                token = await Login();
                 return await Send<T>(method, path, model);
             }
 
@@ -42,17 +44,16 @@ namespace Security.Data.Repositories.Http
             return await response.Content.ReadFromJsonAsync<T>();
         }
 
-        private async Task Login()
+        private async Task<string> Login()
         {
             var response = await client.PostAsJsonAsync(apiUrl + "Authentication/login", new { Email = Mail, Password = Password });
             if (!response.IsSuccessStatusCode)
                 throw new Exception("Login failed " + (int)response.StatusCode);
             string json = await response.Content.ReadAsStringAsync();
             var jwt = DeserializeAnonymous(json, new { token = "", expiration = DateTime.Now });
-            token = jwt.token;
+            return jwt != null ? jwt.token : "";
         }
 
-        private T? DeserializeAnonymous<T>(string json, T _)
-          => JsonSerializer.Deserialize<T>(json);
+        private static T? DeserializeAnonymous<T>(string json, T _) => JsonSerializer.Deserialize<T>(json);
     }
 }

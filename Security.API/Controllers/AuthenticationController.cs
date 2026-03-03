@@ -36,8 +36,8 @@ namespace Security.API.Controllers
             // Insertion dans le header de la réponse
             var authClaims = new List<Claim>()
             {
-                new (ClaimTypes.Email, user.Email),
-                new (ClaimTypes.SerialNumber, user.Id),
+                //new (ClaimTypes.Email, user.Email), // pb de sécurité
+                new (ClaimTypes.NameIdentifier, user.Id),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
