@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;
 using HorusStudio.Maui.MaterialDesignControls;
+using Microsoft.Extensions.Logging;
 
 namespace Security.Mobile
 {
@@ -10,6 +11,7 @@ namespace Security.Mobile
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .UseMaterialDesignControls(options =>
                 {
                 })
