@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Client", "Security
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Data", "Security.Data\Security.Data.csproj", "{0E30A4F3-9A07-4499-9E89-03D70B51EF4A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Mobile", "Security.Mobile\Security.Mobile.csproj", "{F7AEC1ED-6CC0-4A84-BC42-9F27CB60BEE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,11 @@ Global
 		{0E30A4F3-9A07-4499-9E89-03D70B51EF4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E30A4F3-9A07-4499-9E89-03D70B51EF4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E30A4F3-9A07-4499-9E89-03D70B51EF4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7AEC1ED-6CC0-4A84-BC42-9F27CB60BEE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7AEC1ED-6CC0-4A84-BC42-9F27CB60BEE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7AEC1ED-6CC0-4A84-BC42-9F27CB60BEE8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F7AEC1ED-6CC0-4A84-BC42-9F27CB60BEE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7AEC1ED-6CC0-4A84-BC42-9F27CB60BEE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

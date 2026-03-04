@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Security.Mobile.Views.RegisterView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="clr-namespace:HorusStudio.Maui.MaterialDesignControls;assembly=HorusStudio.Maui.MaterialDesignControls"
+    xmlns:viewmodels="clr-namespace:Security.Mobile.ViewModels"
+    Title="RegisterView">
+
+    <VerticalStackLayout
+        Padding="48,0"
+        Spacing="16"
+        VerticalOptions="Center">
+        <material:MaterialTextField
+            Keyboard="Email"
+            Placeholder="Email"
+            Text="{Binding Email}"
+            Type="Outlined" />
+        <material:MaterialTextField
+            IsPassword="True"
+            Placeholder="Mot de passe"
+            Text="{Binding Password}"
+            Type="Outlined" />
+        <material:MaterialTextField
+            IsPassword="True"
+            Placeholder="Confirmer le mot de passe"
+            Text="{Binding ConfirmedPassword}"
+            Type="Outlined" />
+        <material:MaterialButton
+            Margin="0,32"
+            Command="{Binding RegisterCommand}"
+            HorizontalOptions="Center"
+            Text="S'enregistrer" />
+    </VerticalStackLayout>
+
+</ContentPage>
