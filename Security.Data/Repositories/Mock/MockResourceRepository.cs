@@ -12,7 +12,7 @@ namespace Security.Data.Repositories.Mock
         public async Task<IEnumerable<Resource>> GetForUser(string? userId = null)
         {
             List<Resource> resources = [];
-            for (int i = 1; i < 10; i++)
+            for (int i = 1; i < 30; i++)
                 resources.Add(new Resource()
                 {
                     Id = i,
@@ -29,6 +29,16 @@ namespace Security.Data.Repositories.Mock
             {
                 Id = id,
                 Name = "Name"
+            });
+        }
+
+        public async Task<Resource> Update(int id, Resource model)
+        {
+            return await Task.FromResult(new Resource()
+            {
+                Id = id,
+                Name = model.Name,
+                IsFavorite = model.IsFavorite,
             });
         }
     }

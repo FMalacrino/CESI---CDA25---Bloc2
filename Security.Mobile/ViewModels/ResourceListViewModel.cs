@@ -1,24 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
-using Security.Data.Models;
 
 namespace Security.Mobile.ViewModels
 {
     public partial class ResourceListViewModel : BaseViewModel
     {
-        public ObservableCollection<Security.Data.Models.Resource> Models { get; } = [];
+        public ObservableCollection<Data.Models.Resource> Items { get; } = [];
 
         [RelayCommand]
         private async Task Refresh()
         {
-            Models.Clear();
+            Items.Clear();
             foreach (var item in await data.resource.GetForUser())
-                Models.Add(item);
+                Items.Add(item);
+        }
+
+        [RelayCommand]
+        private async Task ToggleFavorite(Data.Models.Resource item)
+        {
+            int index = Items.IndexOf(item);
+            
+            
+            item.IsFavorite = !item.IsFavorite;
+            item = await data.resource.Update(item.Id, item);
+            Items[index] = item;
         }
     }
 }

@@ -30,5 +30,17 @@ namespace Security.Data.Repositories.Sql
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
+
+        public async Task<Resource> Update(int id, Resource model)
+        {
+            var entity = await context.Resources.FirstOrDefaultAsync(x => x.Id == id);
+            if (entity == null)
+                return null; //TODO Exception
+
+            context.Entry(entity).CurrentValues.SetValues(model);
+            await context.SaveChangesAsync();
+            return model;
+
+        }
     }
 }

@@ -8,7 +8,8 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodels="clr-namespace:Security.Mobile.ViewModels"
     x:Name="page"
-    Title="Ressources">
+    Title="Ressources"
+    BackgroundColor="{x:Static material:MaterialDarkTheme.Surface}">
 
     <ContentPage.BindingContext>
         <viewmodels:ResourceListViewModel />
@@ -16,35 +17,45 @@
 
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
-            BindingContext="{Binding Source={x:Reference page}, Path=BindingContext}"
+            BindingContext="{Binding Source={x:Reference root}, Path=BindingContext}"
             Command="{Binding RefreshCommand}"
             EventName="Appearing" />
     </ContentPage.Behaviors>
 
-    <ScrollView Margin="16">
-        <CollectionView ItemsSource="{Binding Models}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid
-                        Margin="0,4"
-                        ColumnDefinitions="*,Auto">
-                        <Label
-                            Grid.Column="0"
-                            Text="{Binding Name}"
-                            VerticalOptions="Center" />
-                        <material:MaterialIconButton
-                            Grid.Column="1"
-                            BackgroundColor="Transparent"
-                            Type="Standard">
-                            <material:MaterialIconButton.ImageSource>
-                                <FontImageSource
-                                    FontFamily="{Binding IsFavorite, Converter={StaticResource BoolToButtonTypeConverter}}"
-                                    Glyph="{x:Static mi:MaterialSharp.Favorite}" />
-                            </material:MaterialIconButton.ImageSource>
-                        </material:MaterialIconButton>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </ScrollView>
+    <Grid x:Name="root">
+        <ScrollView Margin="16">
+            <CollectionView ItemsSource="{Binding Items}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid
+                            Margin="0,4"
+                            ColumnDefinitions="*,Auto">
+                            <Label
+                                Grid.Column="0"
+                                Text="{Binding Name}"
+                                VerticalOptions="Center" />
+                            <material:MaterialIconButton
+                                Grid.Column="1"
+                                BackgroundColor="Transparent"
+                                Command="{Binding Source={x:Reference root}, Path=BindingContext.ToggleFavoriteCommand}"
+                                CommandParameter="{Binding .}"
+                                Type="Standard">
+                                <material:MaterialIconButton.ImageSource>
+                                    <FontImageSource
+                                        FontFamily="{Binding IsFavorite, Converter={StaticResource BoolToButtonTypeConverter}}"
+                                        Glyph="{x:Static mi:MaterialSharp.Favorite}" />
+                                </material:MaterialIconButton.ImageSource>
+                            </material:MaterialIconButton>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+        <Button
+            Margin="48,32"
+            Padding="24,4"
+            HorizontalOptions="End"
+            Text="Empty"
+            VerticalOptions="End" />
+    </Grid>
 </ContentPage>
