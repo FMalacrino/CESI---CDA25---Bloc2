@@ -22,13 +22,26 @@ namespace Security.Mobile.ViewModels
         [ObservableProperty]
         private Credential credential = new();
 
+
+        [RelayCommand]
+        public async Task Load()
+        {
+            Credential = new Credential()
+            {
+                Email = await SecureStorage.GetAsync("Email"),
+                Password = await SecureStorage.GetAsync("Password")
+            };
+        }
+
         [RelayCommand]
         public async Task Login()
         {
             try
             {
                 IsLogin = await data.authenticationRepository.Login(Credential);
-                //TODO Stocker les credential dans l'app
+                
+                await SecureStorage.SetAsync("Email", Credential.Email);
+                await SecureStorage.SetAsync("Password", Credential.Password);
             }
             catch { IsLogin = false; }
         }
