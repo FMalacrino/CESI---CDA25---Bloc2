@@ -24,12 +24,12 @@
         <material:MaterialTextField
             Keyboard="Email"
             Placeholder="Email"
-            Text="{Binding Email}"
+            Text="{Binding Credential.Email}"
             Type="Outlined" />
         <material:MaterialTextField
             IsPassword="True"
             Placeholder="Mot de passe"
-            Text="{Binding Password}"
+            Text="{Binding Credential.Password}"
             Type="Outlined" />
         <material:MaterialTextField
             IsPassword="True"

@@ -6,33 +6,42 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Security.Data.Models;
 using Security.Data.Repositories;
 using Security.Data.Repositories.Mock;
 using Security.Mobile.Services;
 
 namespace Security.Mobile.ViewModels
 {
-    public partial class LoginViewModel : ObservableObject
+    public partial class LoginViewModel : BaseViewModel
     {
-        private readonly DataService dataService = new();
+        [ObservableProperty]
+        private bool? isLogin; // Modifié en cours de route
 
         [ObservableProperty]
-        private bool? isLogin; // Modifier en cours de route
-
-        public string Email { get; set; } = "";
-        public string Password { get; set; } = "";
+        private Credential credential = new();
 
         [RelayCommand]
         public async Task Login()
         {
-            //Debug.WriteLine("----- " + Email + Password);
-            try { IsLogin = await dataService.authenticationRepository.Login(Email, Password); }
+            try
+            {
+                IsLogin = await data.authenticationRepository.Login(Credential);
+                //TODO Stocker les credential dans l'app
+            }
             catch { IsLogin = false; }
         }
 
         [RelayCommand]
         public async Task Register()
         {
+            WeakReferenceMessenger.Default.Register<RegisteredMessage>(this, (_, m) =>
+            {   // Ce code est exécuté quand on reçoit le message uniquement
+                WeakReferenceMessenger.Default.UnregisterAll(this); // se désabonner du message
+                Credential = m.Value;
+            });
+            await navigation.Push(registerView);
         }
     }
 }

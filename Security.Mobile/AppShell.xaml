@@ -8,6 +8,6 @@
 
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate views:RegisterView}"
-        Route="RegisterView" />
+        ContentTemplate="{DataTemplate views:LoginView}"
+        Route="LoginView" />
 </Shell>
