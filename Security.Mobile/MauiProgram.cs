@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using HorusStudio.Maui.MaterialDesignControls;
 using Microsoft.Extensions.Logging;
+using UraniumUI;
 
 namespace Security.Mobile
 {
@@ -19,6 +20,7 @@ namespace Security.Mobile
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddMaterialSymbolsFonts();
                 });
 
 #if DEBUG

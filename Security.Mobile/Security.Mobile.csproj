@@ -63,6 +63,8 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.9" />
+		<PackageReference Include="UraniumUI.Icons.MaterialIcons" Version="2.14.0" />
+		<PackageReference Include="UraniumUI.Icons.MaterialSymbols" Version="2.14.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-android'">
@@ -91,10 +93,16 @@
 	  <Compile Update="Views\LoginView.xaml.cs">
 	    <DependentUpon>LoginView.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\ResourceListView.xaml.cs">
+	    <DependentUpon>ResourceListView.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\RegisterView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ResourceListView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

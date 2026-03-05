@@ -8,6 +8,7 @@ namespace Security.Mobile.ViewModels
     public class BaseViewModel : ObservableObject
     {
         protected const string registerView = "RegisterView";
+        protected const string resourceListView = "ResourceListView";
 
         protected static readonly DataService data = new();
         protected static readonly ToastService toast = new();

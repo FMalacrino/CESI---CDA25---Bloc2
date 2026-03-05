@@ -11,6 +11,7 @@ namespace Security.Mobile
 
             // Ajout des vues vers lesquelles je peux naviguer
             Routing.RegisterRoute(nameof(RegisterView), typeof(RegisterView));
+            Routing.RegisterRoute(nameof(ResourceListView), typeof(ResourceListView));
         }
     }
 }

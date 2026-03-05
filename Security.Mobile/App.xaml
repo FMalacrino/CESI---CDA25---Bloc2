@@ -12,6 +12,7 @@
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
                 <ResourceDictionary>
                     <converters:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter" />
+                    <converters:BoolToButtonTypeConverter x:Key="BoolToButtonTypeConverter" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

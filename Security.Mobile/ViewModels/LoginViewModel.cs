@@ -42,6 +42,8 @@ namespace Security.Mobile.ViewModels
                 
                 await SecureStorage.SetAsync("Email", Credential.Email);
                 await SecureStorage.SetAsync("Password", Credential.Password);
+
+                await navigation.Push(resourceListView);
             }
             catch { IsLogin = false; }
         }
