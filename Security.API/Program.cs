@@ -60,6 +60,8 @@ namespace Security.API
                     b => b.MigrationsAssembly("Security.API"))); // car DataContext est dans une autre assembly
 
             builder.Services.AddScoped<IResourceRepository, SqlResourceRepository>();
+            builder.Services.AddScoped<IUserManager, AspUserManager>();
+
 
             builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<DataContext>()

@@ -11,9 +11,9 @@ namespace Security.API.Controllers
     public class ResourceController : ControllerBase
     {
         private readonly IResourceRepository repository;
-        private readonly UserManager<User> userManager;
+        private readonly IUserManager userManager;
 
-        public ResourceController(IResourceRepository repository, UserManager<User> userManager)
+        public ResourceController(IResourceRepository repository, IUserManager userManager)
         {
             this.repository = repository;
             this.userManager = userManager;
@@ -27,7 +27,7 @@ namespace Security.API.Controllers
             var id = userManager.GetUserId(User);
             if (id == null)
                 return BadRequest();
-            return (await repository.GetForUser(id)).ToList();
+            return Ok((await repository.GetForUser(id)).ToList());
         }
 
         [HttpGet("{id}")] // api/resource/id
@@ -36,8 +36,8 @@ namespace Security.API.Controllers
         {
             var entity = await repository.GetOne(id);
             if (entity == null)
-                return NotFound();
-            return entity;
+                return NotFound(entity);
+            return Ok(entity);
         }
 
         [HttpPost] // api/resource
