@@ -19,8 +19,6 @@ namespace Security.Mobile.ViewModels
         private async Task ToggleFavorite(Data.Models.Resource item)
         {
             int index = Items.IndexOf(item);
-            
-            
             item.IsFavorite = !item.IsFavorite;
             item = await data.resource.Update(item.Id, item);
             Items[index] = item;

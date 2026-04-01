@@ -51,11 +51,19 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </ScrollView>
-        <Button
+        <material:MaterialIconButton
             Margin="48,32"
-            Padding="24,4"
+            CornerRadius="16"
+            HeightRequest="64"
             HorizontalOptions="End"
-            Text="Empty"
-            VerticalOptions="End" />
+            Type="Filled"
+            VerticalOptions="End"
+            WidthRequest="64">
+            <material:MaterialIconButton.ImageSource>
+                <FontImageSource
+                    FontFamily="MaterialOutlinedFilled"
+                    Glyph="{x:Static mi:MaterialSharp.Add}" />
+            </material:MaterialIconButton.ImageSource>
+        </material:MaterialIconButton>
     </Grid>
 </ContentPage>
